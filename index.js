@@ -13,17 +13,21 @@ function getComputerChoice() {
         return "scissor";
     }
 }
-function getHumanChoice(){
-    return prompt('tell your choice');
-}
+function getHumanChoice(Button){
+    return Button.className
 
-function playGame(){
-    let humanScore=0;
-    let computerScore=0;
+}
+let humanScore=0;
+let computerScore=0;
+function playGame(Button){
+
     
     function playRound(humanChoice, computerChoice){
-        console.log("human choose "+humanChoice)
-        console.log("computer choose "+computerChoice)
+
+        const choices =document.querySelector('.choice')
+        choices.setAttribute('style', 'white-space: pre;');
+        choices.textContent=`human choose ${humanChoice} \r\n`
+        choices.textContent+=`computer choose ${computerChoice}`
         let winner=2;
 
     if (humanChoice.toLowerCase()=='rocks'){
@@ -61,27 +65,28 @@ function playGame(){
     else{
         console.log("this round is tied");
     }
-
+    document.querySelector('h2').textContent='Score : '+ humanScore+'-'+computerScore;
 
     }
  
 
-    playRound(getHumanChoice(),getComputerChoice());
-    playRound(getHumanChoice(),getComputerChoice());
-    playRound(getHumanChoice(),getComputerChoice());
-    playRound(getHumanChoice(),getComputerChoice());
-    playRound(getHumanChoice(),getComputerChoice());
+    playRound(getHumanChoice(Button),getComputerChoice());
 
-    while (humanScore==computerScore || (humanScore+computerScore<5)) {
-        playRound(getHumanChoice(),getComputerChoice());
-    }
-    if (humanScore>computerScore){
-        console.log('humans wins with '+humanScore+"-"+computerScore)
 
-    }
-    else{
-        console.log('Computer Wins'+computerScore+'-'+humanScore)
-    }
+    if (!(humanScore==computerScore || (humanScore+computerScore<5))) {
+        if (humanScore>computerScore){
+            document.querySelector('h2').textContent='humans wins with '+humanScore+"-"+computerScore;
+            humanScore=0;
+            computerScore=0;
+        }
+        else{
+            document.querySelector('h2').textContent='Computer Wins'+computerScore+'-'+humanScore;
+            humanScore=0
+            computerScore=0
+        }
+     }
+ 
 }    
-playGame()
+const buttons=document.querySelectorAll('button');
+buttons.forEach((Button)=> Button.addEventListener('click',()=>playGame(Button)));
 
